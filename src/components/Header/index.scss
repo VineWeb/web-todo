@@ -1,5 +1,12 @@
 .nav-top {
   height: 64px;
-  background-color: yellow;
+  background-color: #a25158;
   display: flex;
+}
+.btn {
+  color: #fff;
+  &:active ,&:focus, &:hover {
+    color: #fff !important;
+    background-color: transparent !important;
+  }
 }

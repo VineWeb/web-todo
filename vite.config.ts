@@ -21,14 +21,14 @@ export default defineConfig(({ mode }) => {
       allowImportingTsExtensions: true,
     },
     server: {
-      host: '0.0.0.0',
+      host: 'localhost',
       port: 3006,
       cors: true,
       proxy: {
-        '/apitodo': {
+        '/todoapi': {
           target: env.VITE_URL,
           changeOrigin: true,
-          rewrite: (path: string) => path.replace(/^\/apitodo/, '')
+          rewrite: (path: string) => path.replace(/^\/todoapi/, '')
         }
       }
     }

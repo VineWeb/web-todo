@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Frame from '@/components/Frame';
-import Home from '@/pages/Home/index';
+import Frame from '@/components/Frame.tsx';
+import Home from '@/pages/Home/index.tsx';
 
 const router = (
   <Routes>

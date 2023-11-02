@@ -19,6 +19,7 @@ const CardContainer: React.FC = ({list = []}) => {
     // 删除按钮点击事件
     console.log('Delete button clicked', id);
   };
+  
   return (
     <>
       <Row gutter={[16, 16]} style={listStyle}>
