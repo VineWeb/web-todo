@@ -10,3 +10,12 @@
     background-color: transparent !important;
   }
 }
+.btn-change {
+  color: #1677ff;
+  width: 100%;
+  text-align: center;
+  &:active ,&:focus, &:hover {
+    color: #1677ff !important;
+    background-color: transparent !important;
+  }
+}

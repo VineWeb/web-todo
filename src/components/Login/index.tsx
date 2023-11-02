@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button, Input, Space, Divider, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import Api from '@/api';
+import { connect } from 'react-redux';
+import { OPEN_LOGIN_MODAL, OPEN_REGISTER_MODAL, CLOSE_LOGIN_MODAL } from '@/store/actionType';
 import CryptoJS from 'crypto-js';
 import { secretPwKey } from '@/config/secret'; // 自定义的公钥
 import './index.scss'
-const Login = ({ isLogin, show, onCancel }) => {
+const Login = ({ isLogin, show, onCancel, onOk }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   // useEffect(() => {}, []);
@@ -39,7 +41,7 @@ const Login = ({ isLogin, show, onCancel }) => {
     { contextHolder }
      <Modal style={{top: '300px'}} footer={null} open={show} onCancel={modalOnCancel}>
         <div className='login'>
-          <div className="login-title">{ isLogin ? '登录': '快速注册' }</div>
+          <div className="login-title">{ isLogin ? '账号登录': '快速注册' }</div>
           <Divider />
           <Form form={form} name="horizontal_login" onFinish={onFinish}>
             <Form.Item
@@ -80,10 +82,22 @@ const Login = ({ isLogin, show, onCancel }) => {
                 </Button>
               )}
             </Form.Item>
-        </Form>
+            <Form.Item>
+              <Button className="btn btn-change" type="text" onClick={ () => onOk(isLogin ? OPEN_REGISTER_MODAL : OPEN_LOGIN_MODAL) }>{ isLogin ? '快速注册': '返回账号登录' }</Button>
+            </Form.Item>
+          </Form>
         </div>
       </Modal>
     </>
   )
 }
-export default Login
+const mapStateToProps = state => ({
+  isLogin: state.login.isLogin
+});
+
+const mapDispatchToProps = dispatch => ({
+  onOk: (type) => {
+    dispatch({ type })
+  },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
