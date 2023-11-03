@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
-import { Button, Flex, Input, Pagination, Space } from 'antd'
-import { BorderInnerOutlined } from '@ant-design/icons'
+import { Button, Flex, Input, Pagination, Space, Modal } from 'antd'
+import { BorderInnerOutlined, ExclamationCircleFilled } from '@ant-design/icons'
 import { connect } from 'react-redux';
 import { ADD_TODO, UPDATE_TODO, CLOSE_ADD_TODO_MODAL } from '@/store/actionType';
 import Api from '@/api';
@@ -8,12 +8,27 @@ import { HomeList } from '@/mock/index'
 import Header from '@/components/Header';
 import CardContainer from './cardContainer'
 import DateContainer from './dateContainer'
+const { confirm } = Modal;
 
 // 新增待办
 import AddTodo from './addTodo';
 import './index.scss'
 const { Search } = Input;
 const Home = ({ show, isAddStatus, onClickTodo }) => {
+  const deleteTodoItem = (id) => {
+    console.log(id, 'id')
+    confirm({
+      title: '你要删除此条待办吗?',
+      icon: <ExclamationCircleFilled />,
+      content: '该待办删除后不可恢复!',
+      onOk() {
+        console.log('OK');
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
   const [mode, setMode] = useState('card')
   const onChangeMode = (mode: string) => {
     setMode(mode)
@@ -62,7 +77,7 @@ const Home = ({ show, isAddStatus, onClickTodo }) => {
           </Space>
         </Flex>
       {
-        mode === 'card' ?  <CardContainer list={cardList} updateTodo={updateTodoItem} /> 
+        mode === 'card' ?  <CardContainer list={cardList} updateTodo={updateTodoItem}  deleteTodoItem={deleteTodoItem}/> 
         : <DateContainer list={list} />
       }
         <Pagination
@@ -76,7 +91,7 @@ const Home = ({ show, isAddStatus, onClickTodo }) => {
           />
         </div>
     </div>
-    <AddTodo show={show} isAddStatus={isAddStatus} onTodo={onClickTodo} data={todoData}></AddTodo>
+    <AddTodo show={show} isAddStatus={isAddStatus} onTodo={onClickTodo} data={todoData} ></AddTodo>
   </>
 }
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Card, Col, Row, Space, Button, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { levels } from '@/config/index'
-const CardContainer: React.FC = ({list = [], updateTodo}) => {
+import { levels } from '@/config/index';
+const CardContainer: React.FC = ({list = [], updateTodo, deleteTodoItem}) => {
   const listStyle = {
     height: `calc(100% - 180px)`,
     'overflowX': 'hidden',
@@ -10,11 +10,6 @@ const CardContainer: React.FC = ({list = [], updateTodo}) => {
   }
   const [isHovered, setIsHovered] = useState(false);
   const [id, setId] = useState('0');
-
-  const handleDeleteClick = (id: string) => {
-    // 删除按钮点击事件
-    console.log('Delete button clicked',  typeof id);
-  };
   
   return (
     <>
@@ -38,7 +33,7 @@ const CardContainer: React.FC = ({list = [], updateTodo}) => {
                     <div className="card-buttons">
                       <Space>
                         <Button type="primary"  size='small'  icon={<EditOutlined />} onClick={ () => updateTodo(item) }>编辑</Button>
-                        <Button type="danger" size='small' icon={<DeleteOutlined />} onClick={ () => handleDeleteClick(item.id) }>删除</Button>
+                        <Button type="danger" size='small' icon={<DeleteOutlined />} onClick={ () => deleteTodoItem(item.id) }>删除</Button>
                       </Space>
                     </div>
                   )}
