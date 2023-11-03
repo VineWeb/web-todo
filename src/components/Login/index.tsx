@@ -22,7 +22,7 @@ const Login = ({ isLogin, show, onCancel, onOk }) => {
       } else { // 注册
   
       }
-      form.resetFields()
+      // form.resetFields()
       onCancel()
     } catch (error) {
       messageApi.open({
@@ -33,17 +33,22 @@ const Login = ({ isLogin, show, onCancel, onOk }) => {
   };
 
   const modalOnCancel = () => {
-    form.resetFields()
+    // form.resetFields()
     onCancel()
+  }
+
+  const onChangeModal = () => {
+    form.resetFields()
+    onOk(isLogin ? OPEN_REGISTER_MODAL : OPEN_LOGIN_MODAL)
   }
   return (
     <>
     { contextHolder }
-     <Modal style={{top: '300px'}} footer={null} open={show} onCancel={modalOnCancel}>
+     <Modal style={{top: '300px'}} footer={null} open={show} onCancel={modalOnCancel} destroyOnClose={true}>
         <div className='login'>
           <div className="login-title">{ isLogin ? '账号登录': '快速注册' }</div>
           <Divider />
-          <Form form={form} name="horizontal_login" onFinish={onFinish}>
+          <Form form={form} name="login" onFinish={onFinish} preserve={false}>
             <Form.Item
               name="username"
               rules={[{ required: true, message: '请输入账号/邮箱！' }]}
@@ -83,7 +88,7 @@ const Login = ({ isLogin, show, onCancel, onOk }) => {
               )}
             </Form.Item>
             <Form.Item>
-              <Button className="btn btn-change" type="text" onClick={ () => onOk(isLogin ? OPEN_REGISTER_MODAL : OPEN_LOGIN_MODAL) }>{ isLogin ? '快速注册': '返回账号登录' }</Button>
+              <Button className="btn btn-change" type="text" onClick={ () => onChangeModal() }>{ isLogin ? '快速注册': '返回账号登录' }</Button>
             </Form.Item>
           </Form>
         </div>

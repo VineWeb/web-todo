@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, Col, Row, Space, Button, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { levels } from '@/config/index'
-const CardContainer: React.FC = ({list = []}) => {
+const CardContainer: React.FC = ({list = [], updateTodo}) => {
   const listStyle = {
     height: `calc(100% - 180px)`,
     'overflowX': 'hidden',
@@ -10,14 +10,10 @@ const CardContainer: React.FC = ({list = []}) => {
   }
   const [isHovered, setIsHovered] = useState(false);
   const [id, setId] = useState('0');
-  const handleEditClick = (id: string) => {
-    // 编辑按钮点击事件
-    console.log('Edit button clicked', id);
-  };
 
   const handleDeleteClick = (id: string) => {
     // 删除按钮点击事件
-    console.log('Delete button clicked', id);
+    console.log('Delete button clicked',  typeof id);
   };
   
   return (
@@ -41,7 +37,7 @@ const CardContainer: React.FC = ({list = []}) => {
                   { isHovered && (id === item.id) && ( // 只有在悬停状态下显示按钮
                     <div className="card-buttons">
                       <Space>
-                        <Button type="primary"  size='small'  icon={<EditOutlined />} onClick={ () => handleEditClick(item.id) }>编辑</Button>
+                        <Button type="primary"  size='small'  icon={<EditOutlined />} onClick={ () => updateTodo(item) }>编辑</Button>
                         <Button type="danger" size='small' icon={<DeleteOutlined />} onClick={ () => handleDeleteClick(item.id) }>删除</Button>
                       </Space>
                     </div>

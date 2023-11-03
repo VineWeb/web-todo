@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './index.scss'
-import { Button, Flex, Space, Row, Col } from 'antd';
+import { Button, Divider, Flex, Space, Row, Col } from 'antd';
 import type { FlexProps } from 'antd';
 import { connect } from 'react-redux';
 import Login from '@/components/Login';
@@ -23,8 +23,9 @@ const NavTop = ({ isLogin, show, onChangeMode, onCancel, onOk }) => {
                 <Button  type={selectedMode === 'date' ? 'primary' : 'default'} onClick={() => handleModeChange('date')}>日期模式</Button>
               </Col>
             </Row>
-            <Row gutter={[16, 16]}>
+            <Row gutter={[16, 16]} style={{display: 'flex', alignItems: 'center'}}>
               <Button className="btn" type="text" onClick={ () => onOk(OPEN_LOGIN_MODAL) }>登录</Button>
+              <Divider type="vertical" style={{borderColor: '#fff', top: 0}} orientation='center' />
               <Button className="btn" type="text" onClick={ () => onOk(OPEN_REGISTER_MODAL) }>注册</Button>
             </Row>
           </Flex>

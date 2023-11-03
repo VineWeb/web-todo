@@ -2,15 +2,8 @@
  * 后台 API请求方法封装
  */
 import Request from './Request'
-const mode = import.meta.env.MODE
-// mode test为测试环境打包 development为开发环境  production 为生产环境打包
-const httpsEnv = [
-  { mode: 'development', baseURL: 'http://localhost:3308/todoapi' },
-  { mode: 'production', baseURL: 'https://chenjinbo.cn/todoapi' },
-  { mode: 'test', baseURL: 'https://chenjinbo.cn/todoapi' },
-]
-const baseURL = httpsEnv.filter(item => item.mode === mode)[0].baseURL
-
+const env = import.meta.env
+const { VITE_URL: baseURL  } = env
 const request = new Request({
   baseURL,
   headers: {
