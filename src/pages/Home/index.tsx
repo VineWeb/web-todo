@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { Button, Flex, Input, Pagination, Space, Modal } from 'antd'
 import { BorderInnerOutlined, ExclamationCircleFilled } from '@ant-design/icons'
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import AddTodo from './addTodo';
 import './index.scss'
 const { Search } = Input;
 const Home = ({ show, isAddStatus, onClickTodo }) => {
+
   const deleteTodoItem = (id) => {
     console.log(id, 'id')
     confirm({
@@ -34,33 +35,43 @@ const Home = ({ show, isAddStatus, onClickTodo }) => {
     setMode(mode)
   }
 
-  // 获取用户表
-  const getUsers = async () => {
-    const res = await Api.getUsers()
-    console.log('getUsers')
-  }
-
   // 搜索
   const onSearch = (value, _e, info) => {console.log(value);}
-
-  // 列表数据
   const [list,  setList] = useState(HomeList || [])
-  const total = useMemo(() => {
-    return list.length
-  }, [list])
-  const cardList = useMemo(() => {
-    return list.filter((item, i) => i < 20)
-  }, [list])
+  const [total,  setTotal] = useState(0)
+  // 获取待办列表
+  const getTodoList = async () => {
+    try {
+      const { data } = await Api.getTodoList()
+      setList(data.data)
+      setTotal(data.total)
+    } catch (error) {
+      
+    }
+  }
+  useEffect(() => {
+    getTodoList()
+  }, [])
+
 
   const [todoData, setTodoData] = useState({})
   // 编辑单条待办
   const updateTodoItem = (item) => {
-    onClickTodo(UPDATE_TODO)
     setTodoData(item)
-    console.log(item, 'updateTodoItem id')
+    onClickTodo(UPDATE_TODO)
+    // console.log(item, 'updateTodoItem id')
+  } 
+  const addTodoItem = (item) => {
+    setTodoData({})
+    onClickTodo(ADD_TODO)
+    // console.log(item, 'addTodoItem')
   } 
   
-
+  const onTodo = (type) => {
+    // console.log('index onTodo', type)
+    setTodoData({})
+    onClickTodo(type)
+  }
   // 切换page 
   const onChangePage = (page, pageSize) => {
     console.log(page, pageSize)
@@ -72,12 +83,11 @@ const Home = ({ show, isAddStatus, onClickTodo }) => {
         <Flex justify='space-between' style={{marginBottom: '20PX'}}>
           <Search className='search-inp' placeholder="输入关键字搜索"  size="large" onSearch={onSearch} enterButton />
           <Space>
-            <Button icon={<BorderInnerOutlined />} size="large" type='primary' onClick={ () => onClickTodo(ADD_TODO) }>新增待办</Button>
-            <Button icon={<BorderInnerOutlined />} size="large" onClick={getUsers}>获取用户表</Button>
+            <Button icon={<BorderInnerOutlined />} size="large" type='primary' onClick={ () => addTodoItem() }>新增待办</Button>
           </Space>
         </Flex>
       {
-        mode === 'card' ?  <CardContainer list={cardList} updateTodo={updateTodoItem}  deleteTodoItem={deleteTodoItem}/> 
+        mode === 'card' ?  <CardContainer list={list} updateTodo={updateTodoItem}  deleteTodoItem={deleteTodoItem}/> 
         : <DateContainer list={list} />
       }
         <Pagination
@@ -91,7 +101,7 @@ const Home = ({ show, isAddStatus, onClickTodo }) => {
           />
         </div>
     </div>
-    <AddTodo show={show} isAddStatus={isAddStatus} onTodo={onClickTodo} data={todoData} ></AddTodo>
+    <AddTodo show={show} isAddStatus={isAddStatus} onTodo={onTodo} data={todoData} ></AddTodo>
   </>
 }
 
@@ -101,7 +111,7 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => ({
   onClickTodo: (type) => {
-    console.log(type, 'type')
+    // console.log(type, 'type')
     dispatch({type})
   }
 })

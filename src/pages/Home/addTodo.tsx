@@ -12,8 +12,8 @@ type FieldType = {
   remember?: string;
 };
 const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
+  const title = isAddStatus ? '新增待办': '编辑待办'
   const [form] = Form.useForm();
-  const [initialValues, setInitialValues] = useState({})
   useEffect(() => {
     const startTime = data?.startTime ? dayjs(data.startTime) : null
     const endTime = data?.endTime ? dayjs(data.endTime) : null
@@ -24,16 +24,13 @@ const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
     if (endTime) {
       info = Object.assign(data, {endTime})
     }
-    setInitialValues(info)
-    return () => {
-      setInitialValues({})
-    }
-  }, [data, form])
-  const handleOk = () => {
-    onTodo(CLOSE_ADD_TODO_MODAL)
-  }
+    console.log(title, ': useEffect 加载', info)
+    form.setFieldsValue(info)
+  }, [data])
   const handleCancel = () => {
     onTodo(CLOSE_ADD_TODO_MODAL)
+    form.resetFields()
+    console.log('handleCancel')
   }
 
   const onChangeStartTime = (
@@ -61,25 +58,38 @@ const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
 
   const onFinish = (values: any) => {
     console.log('Success:', values);
+    form.resetFields()
   };
   
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-  const title = isAddStatus ? '新增待办': '编辑待办'
+
+
+  const [submittable, setSubmittable] = React.useState(false);
+  const values = Form.useWatch([], form);
+  useEffect(() => {
+    form.validateFields({ validateOnly: true }).then(
+      () => {
+        setSubmittable(true);
+      },
+      () => {
+        setSubmittable(false);
+      },
+    );
+  }, [values]);
+
   return (
     <>
-      <Modal title={ title} open={show} footer={null}  onOk={handleOk} onCancel={handleCancel} destroyOnClose={true}>
+      <Modal title={title} open={show} footer={null}  onCancel={handleCancel} forceRender>
         <Divider />
         <Form form={form}
           name="basic"
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
           style={{ maxWidth: 600 }}
-          initialValues={initialValues}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          autoComplete="off"
           size='middle'
           preserve={false}
         >
@@ -138,9 +148,7 @@ const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
               () => (
                 <Button type="primary" size='large' htmlType="submit" 
                 style={{width: "100%"}}
-                disabled={ !form.isFieldsTouched(['title', 'content', 'level'], true) ||
-                  !!form.getFieldsError().filter(({ errors }) => errors.length).length
-                }
+                disabled={!submittable}
               >
                 提交
               </Button>
