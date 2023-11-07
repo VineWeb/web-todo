@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Form, Input, Divider, DatePicker, Space, Select } from 'antd';
+import { Button, Modal, Form, Input, Divider, DatePicker, Space, Select, message } from 'antd';
 import dayjs from 'dayjs';
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
-import { ADD_TODO, UPDATE_TODO, CLOSE_ADD_TODO_MODAL } from '@/store/actionType';
+import Api from '@/api';
 import { levels } from '@/config';
 const { RangePicker } = DatePicker;
 type FieldType = {
@@ -11,58 +11,86 @@ type FieldType = {
   password?: string;
   remember?: string;
 };
+
+
 const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
+  const [messageApi, contextHolder] = message.useMessage();
+  const errorMeg = (error) => {
+    messageApi.open({
+      type: 'error',
+      content: error,
+    });
+  };
   const title = isAddStatus ? '新增待办': '编辑待办'
   const [form] = Form.useForm();
+  const [updateInfo, setUpdateInfo] = useState(data)
   useEffect(() => {
     const startTime = data?.startTime ? dayjs(data.startTime) : null
     const endTime = data?.endTime ? dayjs(data.endTime) : null
-    let info = {}
+    let info = data
     if (startTime) {
       info = Object.assign(data, {startTime})
     }
     if (endTime) {
       info = Object.assign(data, {endTime})
     }
-    console.log(title, ': useEffect 加载', info)
     form.setFieldsValue(info)
+    setUpdateInfo(info)
   }, [data])
+  useEffect(() => {
+    // 当 data 中包含 startTime 值时，将其设置到表单中
+    if (data && data.startTime) {
+      const formattedStartTime = dayjs(data.startTime);
+      form.setFieldsValue({ startTime: formattedStartTime });
+    }
+  }, [form]);
   const handleCancel = () => {
-    onTodo(CLOSE_ADD_TODO_MODAL)
+    onTodo(true)
     form.resetFields()
-    console.log('handleCancel')
   }
 
-  const onChangeStartTime = (
-    value: DatePickerProps['value'] | RangePickerProps['value'],
-    dateString: [string, string] | string,
-  ) => {
-    console.log('Selected Time: ', value);
-    console.log('Formatted Selected Time: ', dateString);
-  };
-  
-  const onOkStartTime = (value: DatePickerProps['value'] | RangePickerProps['value']) => {
-    console.log('onOkStartTime: ', value);
-  };
-  const onChangeEndTime = (
-    value: DatePickerProps['value'] | RangePickerProps['value'],
-    dateString: [string, string] | string,
-  ) => {
-    console.log('Selected Time: ', value);
-    console.log('Formatted Selected Time: ', dateString);
-  };
-  
-  const onOkEndTime = (value: DatePickerProps['value'] | RangePickerProps['value']) => {
-    console.log('onOkEndTime: ', value);
-  };
+  const ajaxAddTodo = async (params) => {
+    try {
+      const res = await Api.addTodo(params)
+      form.resetFields()
+      onTodo()
+    } catch (error) {
+      errorMeg(error)
+    }
+  }
+  const ajaxUpdateTodo = async (params) => {
+    try {
+      const res = await Api.updateTodo(params)
+      form.resetFields()
+      onTodo()
+    } catch (error) {
+      errorMeg(error)
+    }
+  }
 
   const onFinish = (values: any) => {
-    console.log('Success:', values);
-    form.resetFields()
+    const {startTime, endTime} = values
+    if (startTime) {
+      values.startTime = dayjs(startTime).format('YYYY-MM-DD HH:mm:ss')
+    }
+    if (endTime) {
+      values.endTime = dayjs(endTime).format('YYYY-MM-DD HH:mm:ss')
+    }
+ 
+    if (isAddStatus) {
+      ajaxAddTodo(values)
+
+    } else {
+      const params = {
+        ...updateInfo,
+        ...values
+      }
+      ajaxUpdateTodo(params)
+    }
   };
   
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+    errorMeg(errorInfo)
   };
 
 
@@ -81,6 +109,7 @@ const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
 
   return (
     <>
+      {contextHolder}
       <Modal title={title} open={show} footer={null}  onCancel={handleCancel} forceRender>
         <Divider />
         <Form form={form}
@@ -127,14 +156,14 @@ const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
             name="startTime"
             rules={[{ required: false, message: '请输入开始时间!' }]}
           >
-            <DatePicker placeholder='请选择开始时间' showTime={{ format: 'YYYY-MM-DD HH:mm:ss' }} onChange={onChangeStartTime} onOk={onOkStartTime} />
+            <DatePicker placeholder='请选择开始时间' showTime format='YYYY-MM-DD HH:mm:ss' />
           </Form.Item>
           <Form.Item<FieldType>
             label="结束时间"
             name="endTime"
             rules={[{ required: false, message: '请输入结束时间!' }]}
           >
-            <DatePicker placeholder='请选择开始时间' showTime={{ format: 'YYYY-MM-DD HH:mm:ss' }} onChange={ onChangeEndTime } onOk={ onOkEndTime } />
+            <DatePicker placeholder='请选择开始时间' showTime format='YYYY-MM-DD HH:mm:ss' />
           </Form.Item>
           <Form.Item<FieldType>
             label="备注"

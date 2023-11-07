@@ -56,7 +56,7 @@ class Request {
       headers['Access-Control-Allow-Origin'] = '*'
       if(localStorage.getItem("token")){
         const token = localStorage.getItem("token")
-        headers['token'] = token
+        headers['Authorization'] = token
       }
       config.headers = headers
       return config

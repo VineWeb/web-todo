@@ -9,6 +9,9 @@
     color: #fff !important;
     background-color: transparent !important;
   }
+  &:focus-visible {
+    outline: none !important;
+  }
 }
 .btn-change {
   color: #1677ff;

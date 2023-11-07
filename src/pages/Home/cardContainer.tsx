@@ -4,7 +4,6 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { levels } from '@/config/index';
 const CardContainer: React.FC = ({list = [], updateTodo, deleteTodoItem}) => {
   const listStyle = {
-    height: `calc(100% - 180px)`,
     'overflowX': 'hidden',
     'overflowY': 'auto'
   }
