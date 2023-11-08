@@ -39,16 +39,23 @@ const Home = ({ show, isAddStatus, onClickTodo }) => {
   }
 
   // 搜索
-  const onSearch = (value, _e, info) => {console.log(value);}
+  const onSearch = (value, _e, info) => {
+    setKeyword(value)
+  }
   const [list,  setList] = useState([])
   const [total,  setTotal] = useState(0)
-  const [pageNum,  setPageNum] = useState(0)
-  const [pageSize,  setPageSize] = useState(10)
   const [keyword,  setKeyword] = useState('')
+  const [pageNum,  setPageNum] = useState(1)
+  const [pageSize,  setPageSize] = useState(10)
   // 获取待办列表
   const getTodoList = async () => {
+    const params = {
+      keyword,
+      pageNum,
+      pageSize
+    }
     try {
-      const { data } = await Api.getTodoList()
+      const { data } = await Api.getTodoList(params)
       setList(data.data)
       setTotal(data.total)
     } catch (error) {
@@ -60,8 +67,8 @@ const Home = ({ show, isAddStatus, onClickTodo }) => {
   // 删除待办
   const deteleTodo = async (id) => {
     try {
-      await Api.deleteTodo({id})
-      setPageNum(1)
+      const res = await Api.deleteTodo({id})
+      getTodoList()
     } catch (error) {
       errorMeg(error.message)
     }
@@ -79,45 +86,51 @@ const Home = ({ show, isAddStatus, onClickTodo }) => {
   }
   // 添加待办
   const addTodoItem = (item) => {
-    setPageNum(1)
+    getTodoList()
     setTodoData({})
     onClickTodo(ADD_TODO)
   }
   const onTodo = (type) => {
-    setPageNum(1)
+    getTodoList()
     setTodoData({})
     onClickTodo(CLOSE_ADD_TODO_MODAL)
   }
   // 切换page 
-  const onChangePage = (page, pageSize) => {
-    console.log(page, pageSize)
+  const onChangePage = (pageNum, pageSize) => {
+    setPageNum(pageNum)
+    setPageSize(pageSize)
   }
+  const isCard = useMemo(() => mode === 'card' )
   return <>
     {contextHolder}
     <Header onChangeMode={ onChangeMode } />
     <div className='warp'>
       <div className='container'>
-        <Flex justify='space-between' style={{marginBottom: '20PX'}}>
-          <Search className='search-inp' placeholder="输入关键字搜索"  size="large" onSearch={onSearch} enterButton />
+        <Flex justify={ isCard ? 'space-between': 'flex-end' } style={{marginBottom: '20PX'}}>
+          { isCard &&  <Search className='search-inp' placeholder="输入关键字搜索" allowClear size="large" onSearch={onSearch} enterButton />}
           <Space>
             <Button icon={<BorderInnerOutlined />} size="large" disabled={!isLoginStatus} type='primary' onClick={ () => addTodoItem() }>新增待办</Button>
           </Space>
         </Flex>
       {
-        mode === 'card' ?  
+        isCard ?  
         (list.length ? <CardContainer list={list} updateTodo={updateTodoItem} deleteTodoItem={deleteTodoItem}/> 
         : (!list.length && <Empty />) )
         : <DateContainer list={list} />
       }
-        <Pagination
-            className='page'
-            total={total}
-            showTotal={(total) => `总共：${total}条`}
-            defaultPageSize={20}
-            defaultCurrent={1}
-            showSizeChanger
-            onChange={onChangePage}
-          />
+       {
+        isCard &&  <Pagination
+         className='page'
+         total={total}
+         showTotal={(total) => `总共：${total}条`}
+         defaultPageSize={pageSize}
+         defaultCurrent={pageNum}
+         current={pageNum}
+         pageSizeOptions={[5, 10, 20]}
+         showSizeChanger
+         onChange={onChangePage}
+       />
+       }
         </div>
     </div>
     <AddTodo show={show} isAddStatus={isAddStatus} onTodo={onTodo} data={todoData} ></AddTodo>

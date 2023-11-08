@@ -44,7 +44,8 @@ const getMonthData = (value: Dayjs) => {
   }
 };
 
-const DateContainer: React.FC = () => {
+const DateContainer: React.FC = ({list = []}) => {
+  console.log(list, 'DateContainer')
   const monthCellRender = (value: Dayjs) => {
     const num = getMonthData(value);
     return num ? (

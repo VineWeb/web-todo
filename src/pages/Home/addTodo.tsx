@@ -127,7 +127,7 @@ const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
             name="title"
             rules={[{ required: true, message: '请输入标题!' }]}
           >
-            <Input   placeholder='请输入标题'/>
+            <Input placeholder='请输入标题'/>
           </Form.Item>
 
           <Form.Item<FieldType>
