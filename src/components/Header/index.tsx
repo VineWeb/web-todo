@@ -25,6 +25,7 @@ const NavTop = ({ isLogin, show, onChangeMode, onLoginCancel, onDispatchFn }) =>
     onDispatchFn(EXIT_LOGIN)
     onDispatchFn(OPEN_LOGIN_MODAL)
     localStorage.removeItem('token')
+    localStorage.removeItem('userid')
     localStorage.removeItem('userinfo')
   }
   return (<>

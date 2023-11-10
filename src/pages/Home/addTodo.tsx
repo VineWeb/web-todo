@@ -55,7 +55,7 @@ const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
       form.resetFields()
       onTodo()
     } catch (error) {
-      errorMeg(error)
+      errorMeg(error?.message)
     }
   }
   const ajaxUpdateTodo = async (params) => {
@@ -64,7 +64,7 @@ const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
       form.resetFields()
       onTodo()
     } catch (error) {
-      errorMeg(error)
+      errorMeg(error?.message)
     }
   }
 
@@ -78,6 +78,7 @@ const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
     }
  
     if (isAddStatus) {
+      values.userid = localStorage.getItem('userid')
       ajaxAddTodo(values)
 
     } else {

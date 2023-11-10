@@ -3,7 +3,7 @@ import { createStore, applyMiddleware  } from 'redux';
 import { composeWithDevTools }  from 'redux-devtools-extension';
 import { OPEN_LOGIN_MODAL, OPEN_REGISTER_MODAL, CLOSE_LOGIN_MODAL, ADD_TODO, UPDATE_TODO, CLOSE_ADD_TODO_MODAL, IS_LOGINED, EXIT_LOGIN } from './actionType';
 const initialState = {
-  count: 0,
+  userid: localStorage.getItem('userid'),
   isLoginStatus: localStorage.getItem('token') ? true : false,
   login: {
     visible: false,

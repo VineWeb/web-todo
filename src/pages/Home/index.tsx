@@ -13,7 +13,7 @@ const { confirm } = Modal;
 import AddTodo from './addTodo';
 import './index.scss'
 const { Search } = Input;
-const Home = ({ show, isAddStatus, onClickTodo }) => {
+const Home = ({ userid, show, isAddStatus, onClickTodo }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const isLoginStatus = useSelector(state => state.isLoginStatus)
   const errorMeg = (error) => {
@@ -42,14 +42,15 @@ const Home = ({ show, isAddStatus, onClickTodo }) => {
   const onSearch = (value, _e, info) => {
     setKeyword(value)
   }
-  const [list,  setList] = useState([])
-  const [total,  setTotal] = useState(0)
-  const [keyword,  setKeyword] = useState('')
-  const [pageNum,  setPageNum] = useState(1)
-  const [pageSize,  setPageSize] = useState(10)
+  const [list, setList] = useState([])
+  const [total, setTotal] = useState(0)
+  const [keyword, setKeyword] = useState('')
+  const [pageNum, setPageNum] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
   // 获取待办列表
   const getTodoList = async () => {
     const params = {
+      userid,
       keyword,
       pageNum,
       pageSize
@@ -139,7 +140,8 @@ const Home = ({ show, isAddStatus, onClickTodo }) => {
 
 const mapStateToProps = state => ({
   show: state.home.visible,
-  isAddStatus: state.home.isAdd
+  isAddStatus: state.home.isAdd,
+  userid: state.userid
 })
 const mapDispatchToProps = dispatch => ({
   onClickTodo: (type) => {

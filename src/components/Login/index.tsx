@@ -20,6 +20,7 @@ const Login = ({ isLogin, show, onCancel, onOk, onDispatchFn }) => {
         const encryptedPassword = CryptoJS.AES.encrypt(password, secretPwKey).toString();
         const { data } = await Api.login({ username,  password: encryptedPassword })
         localStorage.setItem('token', data.token)
+        localStorage.setItem('userid', data.id)
         localStorage.setItem('userinfo', JSON.stringify(data))
         onDispatchFn(IS_LOGINED)
       } else { // 注册
