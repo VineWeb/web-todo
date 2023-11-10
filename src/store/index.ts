@@ -30,7 +30,7 @@ const reducer = (state = initialState, action) => {
     case CLOSE_ADD_TODO_MODAL:
       return { ...state, home: { visible: false, isAdd: true } };
     case IS_LOGINED:
-      return { ...state, ...state.login, isLoginStatus: true };
+      return { ...state, ...state.login, isLoginStatus: true, userid: localStorage.getItem('userid') };
     case EXIT_LOGIN:
       return { ...state, ...state.login, isLoginStatus: false };
     default:
