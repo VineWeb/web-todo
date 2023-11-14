@@ -43,6 +43,10 @@ const AddTodo = ( { show, isAddStatus, onTodo, data } ) => {
       const formattedStartTime = dayjs(data.startTime);
       form.setFieldsValue({ startTime: formattedStartTime });
     }
+    if (data && data.endTime) {
+      const formattedStartTime = dayjs(data.endTime);
+      form.setFieldsValue({ startTime: formattedStartTime });
+    }
   }, [form]);
   const handleCancel = () => {
     onTodo(true)

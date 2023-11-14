@@ -120,7 +120,7 @@ const Home = ({ userid, show, isAddStatus, onClickTodo }) => {
         : <DateContainer list={list} />
       }
        {
-        isCard &&  <Pagination
+        isCard && (total !== 0) &&  <Pagination
          className='page'
          total={total}
          showTotal={(total) => `总共：${total}条`}
