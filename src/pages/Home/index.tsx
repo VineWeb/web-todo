@@ -7,6 +7,7 @@ import Api from '@/api';
 import Header from '@/components/Header';
 import CardContainer from './cardContainer'
 import DateContainer from './dateContainer'
+import Spark from './spark'
 const { confirm } = Modal;
 
 // 新增待办
@@ -33,7 +34,7 @@ const Home = ({ userid, show, isAddStatus, onClickTodo }) => {
       onCancel() {},
     });
   };
-  const [mode, setMode] = useState('card')
+  const [mode, setMode] = useState('date')
   const onChangeMode = (mode: string) => {
     setMode(mode)
   }
@@ -117,7 +118,7 @@ const Home = ({ userid, show, isAddStatus, onClickTodo }) => {
         isCard ?  
         (list.length ? <CardContainer list={list} updateTodo={updateTodoItem} deleteTodoItem={deleteTodoItem}/> 
         : (!list.length && <Empty />) )
-        : <DateContainer list={list} />
+        : <Spark />
       }
        {
         isCard && (total !== 0) &&  <Pagination

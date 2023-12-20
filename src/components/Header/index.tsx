@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Login from '@/components/Login';
 import { OPEN_LOGIN_MODAL, OPEN_REGISTER_MODAL, CLOSE_LOGIN_MODAL, EXIT_LOGIN } from '@/store/actionType';
 const NavTop = ({ isLogin, show, onChangeMode, onLoginCancel, onDispatchFn }) => {
-  const [selectedMode, setSelectedMode] = useState('card');
+  const [selectedMode, setSelectedMode] = useState('date');
   const handleModeChange = (mode) => {
     setSelectedMode(mode);
     onChangeMode(mode);
@@ -36,9 +36,9 @@ const NavTop = ({ isLogin, show, onChangeMode, onLoginCancel, onDispatchFn }) =>
               <Col span={12}>
                 <Button  type={selectedMode === 'card' ? 'primary' : 'default'} onClick={() => handleModeChange('card')}>卡片模式</Button>
               </Col>
-              {/* <Col span={12}>
-                <Button disabled type={selectedMode === 'date' ? 'primary' : 'default'} onClick={() => handleModeChange('date')}>日期模式</Button>
-              </Col> */}
+              <Col span={12}>
+                <Button type={selectedMode === 'date' ? 'primary' : 'default'} onClick={() => handleModeChange('date')}>问答模式</Button>
+              </Col>
             </Row>
             { userinfo?.username ?
               (<Row gutter={[16, 16]} style={{display: 'flex', alignItems: 'center'}}>
