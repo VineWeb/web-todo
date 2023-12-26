@@ -11,6 +11,7 @@ const NavTop = ({ isLogin, show, onChangeMode, onLoginCancel, onDispatchFn }) =>
     setSelectedMode(mode);
     onChangeMode(mode);
   };
+  
   const info = localStorage.getItem('userinfo')
   const [userinfo, setUserinfo] = useState(info)
   useEffect(() => {
@@ -33,11 +34,17 @@ const NavTop = ({ isLogin, show, onChangeMode, onLoginCancel, onDispatchFn }) =>
         <div className="container">
           <Flex align='center' justify='space-between' flex={1} style={{height: '100%'}} >
             <Row gutter={[16, 16]}>
-              <Col span={12}>
+              <Col span={6}>
                 <Button  type={selectedMode === 'card' ? 'primary' : 'default'} onClick={() => handleModeChange('card')}>卡片模式</Button>
               </Col>
-              <Col span={12}>
+              <Col span={6}>
                 <Button type={selectedMode === 'date' ? 'primary' : 'default'} onClick={() => handleModeChange('date')}>问答模式</Button>
+              </Col>
+              <Col span={6}>
+                <Button type='default' onClick={() => handleModeChange('date')}>函数组件</Button>
+              </Col>
+              <Col span={6}>
+                <Button type='primary' onClick={() => handleModeChange('date')}>Class组件</Button>
               </Col>
             </Row>
             { userinfo?.username ?
