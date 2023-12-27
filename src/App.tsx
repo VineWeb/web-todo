@@ -5,7 +5,7 @@ import './styles/index.scss'
 const App = () => {
   return (
     <Router>
-      {router}
+      {router()}
     </Router>
   )
 };

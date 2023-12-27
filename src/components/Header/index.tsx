@@ -5,13 +5,19 @@ import type { FlexProps } from 'antd';
 import { connect } from 'react-redux';
 import Login from '@/components/Login';
 import { OPEN_LOGIN_MODAL, OPEN_REGISTER_MODAL, CLOSE_LOGIN_MODAL, EXIT_LOGIN } from '@/store/actionType';
+import { useNavigate } from "react-router-dom";
 const NavTop = ({ isLogin, show, onChangeMode, onLoginCancel, onDispatchFn }) => {
-  const [selectedMode, setSelectedMode] = useState('date');
-  const handleModeChange = (mode) => {
+  const navigate = useNavigate();
+  const [selectedMode, setSelectedMode] = useState('');
+  const handleModeChange = (mode: string) => {
     setSelectedMode(mode);
     onChangeMode(mode);
+    if (mode === 'class' || mode === 'function') {
+      navigate(`/${mode}`)
+    } else {
+      navigate('/')
+    }
   };
-  
   const info = localStorage.getItem('userinfo')
   const [userinfo, setUserinfo] = useState(info)
   useEffect(() => {
@@ -41,10 +47,10 @@ const NavTop = ({ isLogin, show, onChangeMode, onLoginCancel, onDispatchFn }) =>
                 <Button type={selectedMode === 'date' ? 'primary' : 'default'} onClick={() => handleModeChange('date')}>问答模式</Button>
               </Col>
               <Col span={6}>
-                <Button type='default' onClick={() => handleModeChange('date')}>函数组件</Button>
+                <Button type={selectedMode === 'class' ? 'primary' : 'default'} onClick={() => handleModeChange('class')}>类组件</Button>
               </Col>
               <Col span={6}>
-                <Button type='primary' onClick={() => handleModeChange('date')}>Class组件</Button>
+                <Button type={selectedMode === 'function' ? 'primary' : 'default'} onClick={() => handleModeChange('function')}>函数组件</Button>
               </Col>
             </Row>
             { userinfo?.username ?

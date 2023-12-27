@@ -14,7 +14,9 @@ const { confirm } = Modal;
 import AddTodo from './addTodo';
 import './index.scss'
 const { Search } = Input;
-const Home = ({ userid, show, isAddStatus, onClickTodo }) => {
+const Home = (props) => {
+  console.log(props, 'props')
+  const { userid, show, isAddStatus, onClickTodo, mode } = props
   const [messageApi, contextHolder] = message.useMessage();
   const isLoginStatus = useSelector(state => state.isLoginStatus)
   const errorMeg = (error) => {
@@ -34,11 +36,6 @@ const Home = ({ userid, show, isAddStatus, onClickTodo }) => {
       onCancel() {},
     });
   };
-  const [mode, setMode] = useState('date')
-  const onChangeMode = (mode: string) => {
-    setMode(mode)
-  }
-
   // 搜索
   const onSearch = (value, _e, info) => {
     setKeyword(value)
@@ -105,7 +102,6 @@ const Home = ({ userid, show, isAddStatus, onClickTodo }) => {
   const isCard = useMemo(() => mode === 'card' )
   return <>
     {contextHolder}
-    <Header onChangeMode={ onChangeMode } />
     <div className='warp'>
       <div className='container'>
         <Flex justify={ isCard ? 'space-between': 'flex-end' } style={{marginBottom: '20PX'}}>
