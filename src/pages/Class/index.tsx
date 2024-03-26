@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 class ClassCom extends Component {
   timer = 0;
-  constructor (props: {} | Readonly<{}>) {
+  constructor (props: any) {
     super(props)
     this.state = {
       count: 0

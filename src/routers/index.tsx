@@ -5,6 +5,7 @@ import Home from '@/pages/Home/index.tsx';
 import Header from '@/components/Header/index.tsx';
 import ClassCom from '@/pages/Class/index.tsx';
 import FunCom from '@/pages/Function/index.tsx';
+import EventCom from '@/pages/Event/index.tsx';
 const Router = () => {
   const [mode, setMode] = useState('')
   return (
@@ -23,6 +24,7 @@ const Router = () => {
         <Route path="/" element={<Home mode={mode}/>} />
         <Route path="/class" element={<ClassCom />} />
         <Route path="/function" element={<FunCom />} />
+        <Route path="/event" element={<EventCom />} />
       </Route>
     </Routes>
   )

@@ -1,9 +1,9 @@
-import React, { useState, useEffect,useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './index.scss'
 import { Button, Divider, Flex, Space, Row, Col } from 'antd';
 import type { FlexProps } from 'antd';
 import { connect } from 'react-redux';
-import Login from '@/components/Login';
+import Login from '@/components/Login/index.tsx';
 import { OPEN_LOGIN_MODAL, OPEN_REGISTER_MODAL, CLOSE_LOGIN_MODAL, EXIT_LOGIN } from '@/store/actionType';
 import { useNavigate } from "react-router-dom";
 const NavTop = ({ isLogin, show, onChangeMode, onLoginCancel, onDispatchFn }) => {
@@ -12,7 +12,7 @@ const NavTop = ({ isLogin, show, onChangeMode, onLoginCancel, onDispatchFn }) =>
   const handleModeChange = (mode: string) => {
     setSelectedMode(mode);
     onChangeMode(mode);
-    if (mode === 'class' || mode === 'function') {
+    if (mode === 'class' || mode === 'function' || mode === 'event') {
       navigate(`/${mode}`)
     } else {
       navigate('/')
