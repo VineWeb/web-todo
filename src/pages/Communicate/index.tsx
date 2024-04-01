@@ -1,8 +1,9 @@
 // ParentCom.tsx
-import Brother from './Brother';
+// import Brother from './Brother';
+import Descendant from './Descendant';
 function Index () {
   return (
-    <Brother></Brother>
+    <Descendant></Descendant>
   )
 }
 export default Index
