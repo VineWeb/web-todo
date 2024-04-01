@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import './index.scss'
+import './index.header.scss'
 import { Button, Divider, Flex, Space, Row, Col } from 'antd';
 import type { FlexProps } from 'antd';
 import { connect } from 'react-redux';
