@@ -5,7 +5,9 @@ import { store, setName } from './stores/index';
 
 function SenderComponent () {
   const dispatch = useDispatch()
-  const oldName = useSelector((state) => state.name)
+  const oldName = useSelector((state) => {
+    return state.name
+  })
   const changeName = () => {
     const name = oldName === '张三' ? '李四' : '张三'
     dispatch(setName(name))
