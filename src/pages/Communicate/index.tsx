@@ -1,9 +1,8 @@
 // ParentCom.tsx
-// import Brother from './Brother';
-import Descendant from './Descendant';
+import ReduxConnect from './Redux-connect';
 function Index () {
   return (
-    <Descendant></Descendant>
+    <ReduxConnect></ReduxConnect>
   )
 }
 export default Index
