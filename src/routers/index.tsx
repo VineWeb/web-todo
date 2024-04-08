@@ -7,6 +7,7 @@ import ClassCom from '@/pages/Class/index.tsx';
 import FunCom from '@/pages/Function/index.tsx';
 import EventCom from '@/pages/Event/index.tsx';
 import CommunicateCom from '@/pages/communicate/index.tsx';
+import RefCom from '@/pages/Ref/index.tsx';
 const Router = () => {
   const [mode, setMode] = useState('')
   return (
@@ -27,6 +28,7 @@ const Router = () => {
         <Route path="/function" element={<FunCom />} />
         <Route path="/event" element={<EventCom />} />
         <Route path="/info" element={<CommunicateCom />} />
+        <Route path="/ref" element={<RefCom />} />
       </Route>
     </Routes>
   )
